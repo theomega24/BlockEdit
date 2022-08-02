@@ -1,0 +1,62 @@
+package dev.omega24.blockedit.command.manager;
+
+import cloud.commandframework.Command.Builder;
+import cloud.commandframework.context.CommandContext;
+import cloud.commandframework.meta.CommandMeta;
+import cloud.commandframework.paper.PaperCommandManager;
+import dev.omega24.blockedit.BlockEdit;
+import dev.omega24.blockedit.config.Config;
+import dev.omega24.blockedit.config.Lang;
+import dev.omega24.blockedit.player.BEPlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+public abstract class Command {
+    protected final BlockEdit plugin;
+    private final PaperCommandManager<CommandSender> manager;
+
+    public Command(BlockEdit plugin, PaperCommandManager<CommandSender> manager) {
+        this.plugin = plugin;
+        this.manager = manager;
+    }
+
+    public void register() {
+        this.manager.command(this.register(
+                this.manager.commandBuilder(Config.COMMAND_PREFIX + this.data().name())
+                        .permission(this.permission())
+                        .meta(CommandMeta.DESCRIPTION, this.data().description())
+        ).handler(this::handle));
+    }
+
+    private void handle(CommandContext<CommandSender> context) {
+        if (!(context.getSender() instanceof Player)) {
+            Lang.send(context.getSender(), Lang.PLAYER_COMMAND_ONLY);
+            return;
+        }
+
+        this.execute(context);
+    }
+
+    protected BEPlayer getPlayer(CommandContext<CommandSender> context) {
+        if (!(context.getSender() instanceof Player player)) {
+            throw new IllegalCallerException();
+        }
+
+        return plugin.getPlayerManager().get(player);
+    }
+
+    protected abstract Builder<CommandSender> register(Builder<CommandSender> builder);
+
+    protected abstract void execute(CommandContext<CommandSender> context);
+
+    protected abstract CommandData data();
+
+    protected String permission() {
+        return "blockedit.command." + data().name();
+    }
+
+    public record CommandData(
+            String name,
+            String description
+    ) {}
+}

@@ -3,8 +3,6 @@ package dev.omega24.blockedit.wand.manager;
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.config.Lang;
 import dev.omega24.blockedit.player.BEPlayer;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,6 +25,10 @@ public abstract class Wand implements Listener {
         this.data = data();
         this.key = new NamespacedKey(plugin, data.id());
 
+        ItemMeta meta = data.item.getItemMeta();
+        meta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
+        data.item.setItemMeta(meta);
+
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -35,17 +37,10 @@ public abstract class Wand implements Listener {
     }
 
     public void give(BEPlayer player) {
-        ItemStack item = new ItemStack(data.material());
-
-        ItemMeta meta = item.getItemMeta();
-        meta.displayName(MiniMessage.miniMessage().deserialize(data.name()));
-        meta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) 1);
-        item.setItemMeta(meta);
-
         PlayerInventory inventory = player.getPlayer().getInventory();
         for (int slot = 0; slot <= 8; slot++) {
             if (inventory.getStorageContents()[slot] == null) {
-                inventory.addItem(item);
+                inventory.addItem(data.item.clone());
                 return;
             }
         }
@@ -70,8 +65,7 @@ public abstract class Wand implements Listener {
 
     public record WandData(
             String id,
-            String name,
-            Material material,
+            ItemStack item,
             List<Action> actions
     ) {}
 }

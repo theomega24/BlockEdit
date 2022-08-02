@@ -1,5 +1,6 @@
 package dev.omega24.blockedit.config.manager;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -35,10 +36,22 @@ public class ConfigManager {
             String key = keyAnnotation.value();
 
             try {
-                if (config.get(key) == null) {
-                    config.set(key, field.get(null));
+                Object value = field.get(null);
+
+                boolean isMaterial = value.getClass().equals(Material.class);
+                if (isMaterial) {
+                    value = ((Material) value).getKey().asString();
                 }
-                field.set(null, config.get(key));
+
+                if (config.get(key) == null) {
+                    config.set(key, value);
+                }
+
+                value = config.get(key);
+                if (isMaterial) {
+                    value = Material.matchMaterial((String) value);
+                }
+                field.set(null, value);
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             }

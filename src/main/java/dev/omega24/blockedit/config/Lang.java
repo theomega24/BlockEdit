@@ -7,6 +7,8 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.command.ConsoleCommandSender;
 
+import java.util.List;
+
 public class Lang {
 
     @Key("prefix.console")
@@ -26,6 +28,8 @@ public class Lang {
 
     @Key("wand.selection.name")
     public static String SELECTION_WAND_NAME = "Selection Wand";
+    @Key("wand.selection.lore")
+    public static List<String> SELECTION_WAND_LORE = List.of("Right click to set position one", "Left click to set position two");
     @Key("wand.selection.set-position")
     public static String SELECTION_WAND_SET_POSITION = "Set position <pos> to <x>, <y>, <z>";
 

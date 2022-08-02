@@ -7,7 +7,7 @@ import cloud.commandframework.paper.PaperCommandManager;
 import com.google.common.collect.ImmutableList;
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.command.WandCommand;
-import dev.omega24.blockedit.util.exception.ArgumentParseException;
+import dev.omega24.blockedit.command.util.PlayerOnlyPreprocessor;
 import org.bukkit.command.CommandSender;
 
 import java.util.function.Function;
@@ -20,9 +20,9 @@ public class CommandManager {
         if (manager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
             manager.registerBrigadier();
 
-            CloudBrigadierManager<?, ?> brigManager = manager.brigadierManager();
-            if (brigManager != null) {
-                brigManager.setNativeNumberSuggestions(false);
+            CloudBrigadierManager<?, ?> brigadier = manager.brigadierManager();
+            if (brigadier != null) {
+                brigadier.setNativeNumberSuggestions(false);
             }
         }
 
@@ -30,7 +30,7 @@ public class CommandManager {
             manager.registerAsynchronousCompletions();
         }
 
-        manager.registerExceptionHandler(ArgumentParseException.class, ((sender, e) -> sender.sendMessage(e.getComponent())));
+        manager.registerCommandPreProcessor(new PlayerOnlyPreprocessor());
 
         ImmutableList.of(
                 new WandCommand(plugin, manager)

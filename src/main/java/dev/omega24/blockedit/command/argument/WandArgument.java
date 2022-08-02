@@ -7,10 +7,9 @@ import cloud.commandframework.arguments.parser.ArgumentParser;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.parsing.NoInputProvidedException;
 import dev.omega24.blockedit.BlockEdit;
-import dev.omega24.blockedit.util.exception.ArgumentParseException;
 import dev.omega24.blockedit.config.Lang;
 import dev.omega24.blockedit.wand.manager.Wand;
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -80,15 +79,16 @@ public class WandArgument<C> extends CommandArgument<C, Wand> {
         }
     }
 
-    public static class WandParseException extends ArgumentParseException {
+    public static class WandParseException extends Exception {
         private final String name;
 
         public WandParseException(String name) {
             this.name = name;
         }
 
-        public Component getComponent() {
-            return Lang.parse(Lang.WAND_COMMAND_NOT_FOUND, Placeholder.unparsed("wand", this.name));
+        @Override
+        public String getMessage() {
+            return MiniMessage.miniMessage().stripTags(Lang.WAND_COMMAND_NOT_FOUND, Placeholder.unparsed("wand", name));
         }
     }
 }

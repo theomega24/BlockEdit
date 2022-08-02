@@ -32,9 +32,9 @@ public class SelectionWand extends Wand {
 
         Position position = Position.from(block.getLocation());
         if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            player.getSelection().pos1(position);
+            player.setPos1(position);
         } else {
-            player.getSelection().pos2(position);
+            player.setPos2(position);
         }
 
         player.send(

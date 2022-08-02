@@ -21,17 +21,17 @@ public class Lang {
     @Key("command.wand.inventory-full")
     public static String WAND_COMMAND_HOTBAR_FULL = "<red>Your hotbar must have at least one available space";
     @Key("command.wand.wand-not-found")
-    public static String WAND_COMMAND_NOT_FOUND = "<red>The wand <gray><wand></gray> could not be found";
+    public static String WAND_COMMAND_NOT_FOUND = "The wand <wand> could not be found";
 
     @Key("command.error.player-only")
-    public static String PLAYER_COMMAND_ONLY = "<red>You can only run this command as a player";
+    public static String PLAYER_COMMAND_ONLY = "You can only run this command as a player";
 
     @Key("wand.selection.name")
     public static String SELECTION_WAND_NAME = "Selection Wand";
     @Key("wand.selection.lore")
     public static List<String> SELECTION_WAND_LORE = List.of("Right click to set position one", "Left click to set position two");
     @Key("wand.selection.set-position")
-    public static String SELECTION_WAND_SET_POSITION = "Set position <pos> to <x>, <y>, <z>";
+    public static String SELECTION_WAND_SET_POSITION = "Set position <pos> to <gray><x> / <y> / <z>";
 
     @Key("numbers.one")
     public static String NUMBER_ONE = "one";

@@ -50,7 +50,8 @@ public abstract class Wand implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getItem().getItemMeta().getPersistentDataContainer().getOrDefault(key, PersistentDataType.BYTE, (byte) 0) != 1) {
+        ItemStack item = event.getItem();
+        if (item == null || item.getItemMeta().getPersistentDataContainer().getOrDefault(key, PersistentDataType.BYTE, (byte) 0) != 1) {
             return;
         }
 

@@ -3,16 +3,19 @@ package dev.omega24.blockedit.player;
 import com.google.common.collect.Maps;
 import dev.omega24.blockedit.BlockEdit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Map;
 import java.util.UUID;
 
-public class PlayerManager {
-    private final BlockEdit plugin;
+public class PlayerManager implements Listener {
     private final Map<UUID, BEPlayer> bePlayerMap = Maps.newHashMap();
 
     public PlayerManager(BlockEdit plugin) {
-        this.plugin = plugin;
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     public BEPlayer get(Player player) {
@@ -23,11 +26,17 @@ public class PlayerManager {
         bePlayerMap.put(player.getUniqueId(), new BEPlayer(player.getUniqueId()));
     }
 
-    public BEPlayer getOrCreate(Player player) {
-        if (!bePlayerMap.containsKey(player.getUniqueId())) {
-            create(player);
-        }
+    public void destroy(Player player) {
+        bePlayerMap.remove(player.getUniqueId());
+    }
 
-        return get(player);
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        this.create(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        this.destroy(event.getPlayer());
     }
 }

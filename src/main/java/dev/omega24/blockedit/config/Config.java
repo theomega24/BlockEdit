@@ -1,6 +1,6 @@
 package dev.omega24.blockedit.config;
 
-import dev.omega24.blockedit.config.manager.Key;
+import dev.omega24.blockedit.config.annotation.Key;
 import org.bukkit.Material;
 
 public class Config {

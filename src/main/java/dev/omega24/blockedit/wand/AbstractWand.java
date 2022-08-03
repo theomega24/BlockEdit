@@ -1,8 +1,8 @@
-package dev.omega24.blockedit.wand.manager;
+package dev.omega24.blockedit.wand;
 
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.config.Lang;
-import dev.omega24.blockedit.player.BEPlayer;
+import dev.omega24.blockedit.user.User;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,12 +15,12 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 
-public abstract class Wand implements Listener {
+public abstract class AbstractWand implements Listener {
     protected final BlockEdit plugin;
     private final WandData data;
     private final NamespacedKey key;
 
-    public Wand(BlockEdit plugin) {
+    public AbstractWand(BlockEdit plugin) {
         this.plugin = plugin;
         this.data = data();
         this.key = new NamespacedKey(plugin, data.id());
@@ -36,7 +36,7 @@ public abstract class Wand implements Listener {
         return this.key;
     }
 
-    public void give(BEPlayer player) {
+    public void give(User player) {
         PlayerInventory inventory = player.getPlayer().getInventory();
         for (int slot = 0; slot <= 8; slot++) {
             if (inventory.getStorageContents()[slot] == null) {
@@ -56,11 +56,11 @@ public abstract class Wand implements Listener {
         }
 
         if (data.actions().contains(event.getAction())) {
-            this.use(plugin.getPlayerManager().get(event.getPlayer()), event);
+            this.use(User.get(event.getPlayer()), event);
         }
     }
 
-    protected abstract void use(BEPlayer player, PlayerInteractEvent event);
+    protected abstract void use(User player, PlayerInteractEvent event);
 
     protected abstract WandData data();
 

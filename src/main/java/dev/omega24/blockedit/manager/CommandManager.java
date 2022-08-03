@@ -1,4 +1,4 @@
-package dev.omega24.blockedit.command.manager;
+package dev.omega24.blockedit.manager;
 
 import cloud.commandframework.brigadier.CloudBrigadierManager;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
@@ -6,8 +6,9 @@ import cloud.commandframework.execution.AsynchronousCommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.google.common.collect.ImmutableList;
 import dev.omega24.blockedit.BlockEdit;
+import dev.omega24.blockedit.command.AbstractCommand;
 import dev.omega24.blockedit.command.WandCommand;
-import dev.omega24.blockedit.command.util.PlayerOnlyPreprocessor;
+import dev.omega24.blockedit.command.processor.PlayerOnlyPreprocessor;
 import org.bukkit.command.CommandSender;
 
 import java.util.function.Function;
@@ -34,6 +35,6 @@ public class CommandManager {
 
         ImmutableList.of(
                 new WandCommand(plugin, manager)
-        ).forEach(Command::register);
+        ).forEach(AbstractCommand::register);
     }
 }

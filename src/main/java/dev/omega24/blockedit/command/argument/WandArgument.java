@@ -8,7 +8,7 @@ import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.parsing.NoInputProvidedException;
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.config.Lang;
-import dev.omega24.blockedit.wand.manager.Wand;
+import dev.omega24.blockedit.wand.AbstractWand;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,51 +20,51 @@ import java.util.Queue;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-public class WandArgument<C> extends CommandArgument<C, Wand> {
+public class WandArgument<C> extends CommandArgument<C, AbstractWand> {
 
     WandArgument(boolean required, String name, String defaultValue, BiFunction<CommandContext<C>, String, List<String>> suggestionsProvider, ArgumentDescription defaultDescription) {
-        super(required, name, new WandParser<>(), defaultValue, Wand.class, suggestionsProvider, defaultDescription);
+        super(required, name, new WandParser<>(), defaultValue, AbstractWand.class, suggestionsProvider, defaultDescription);
     }
 
 
-    public static <C> CommandArgument.Builder<C, Wand> newBuilder(String name) {
+    public static <C> CommandArgument.Builder<C, AbstractWand> newBuilder(String name) {
         return new WandArgument.Builder<>(name);
     }
 
-    public static <C> CommandArgument<C, Wand> of(String name) {
+    public static <C> CommandArgument<C, AbstractWand> of(String name) {
         return WandArgument.<C>newBuilder(name).asRequired().build();
     }
 
-    public static <C> CommandArgument<C, Wand> optional(String name) {
+    public static <C> CommandArgument<C, AbstractWand> optional(String name) {
         return WandArgument.<C>newBuilder(name).asOptional().build();
     }
 
-    public static <C> CommandArgument<C, Wand> optional(String name, String defaultValue) {
+    public static <C> CommandArgument<C, AbstractWand> optional(String name, String defaultValue) {
         return WandArgument.<C>newBuilder(name).asOptionalWithDefault(defaultValue).build();
     }
 
-    public static class Builder<C> extends CommandArgument.Builder<C, Wand> {
+    public static class Builder<C> extends CommandArgument.Builder<C, AbstractWand> {
         private Builder(String name) {
-            super(Wand.class, name);
+            super(AbstractWand.class, name);
         }
 
         @Override
-        public @NotNull CommandArgument<C, Wand> build() {
+        public @NotNull CommandArgument<C, AbstractWand> build() {
             return new WandArgument<>(isRequired(), getName(), getDefaultValue(), getSuggestionsProvider(), getDefaultDescription());
         }
     }
 
-    public static class WandParser<C> implements ArgumentParser<C, Wand> {
+    public static class WandParser<C> implements ArgumentParser<C, AbstractWand> {
         private final BlockEdit plugin = JavaPlugin.getPlugin(BlockEdit.class);
 
         @Override
-        public @NonNull ArgumentParseResult<Wand> parse(@NotNull CommandContext<C> commandContext, @NotNull Queue<String> inputQueue) {
+        public @NonNull ArgumentParseResult<AbstractWand> parse(@NotNull CommandContext<C> commandContext, @NotNull Queue<String> inputQueue) {
             String input = inputQueue.peek();
             if (input == null) {
                 return ArgumentParseResult.failure(new NoInputProvidedException(WandParser.class, commandContext));
             }
 
-            Wand wand = plugin.getWands().getById(input);
+            AbstractWand wand = plugin.getWandManager().getById(input);
             if (wand == null) {
                 return ArgumentParseResult.failure(new WandParseException(input));
             }
@@ -75,7 +75,7 @@ public class WandArgument<C> extends CommandArgument<C, Wand> {
 
         @Override
         public @NonNull List<String> suggestions(@NonNull CommandContext<C> commandContext, @NonNull String input) {
-            return plugin.getWands().getAll().stream().map((wand) -> wand.getKey().getKey()).collect(Collectors.toList());
+            return plugin.getWandManager().getAll().stream().map((wand) -> wand.getKey().getKey()).collect(Collectors.toList());
         }
     }
 

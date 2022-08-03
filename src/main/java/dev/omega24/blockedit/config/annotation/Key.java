@@ -1,4 +1,4 @@
-package dev.omega24.blockedit.config.manager;
+package dev.omega24.blockedit.config.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

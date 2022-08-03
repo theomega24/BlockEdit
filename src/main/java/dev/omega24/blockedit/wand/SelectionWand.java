@@ -3,8 +3,7 @@ package dev.omega24.blockedit.wand;
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.config.Config;
 import dev.omega24.blockedit.config.Lang;
-import dev.omega24.blockedit.player.BEPlayer;
-import dev.omega24.blockedit.wand.manager.Wand;
+import dev.omega24.blockedit.user.User;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Location;
@@ -17,14 +16,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SelectionWand extends Wand {
+public class SelectionWand extends AbstractWand {
 
     public SelectionWand(BlockEdit plugin) {
         super(plugin);
     }
 
     @Override
-    protected void use(BEPlayer player, PlayerInteractEvent event) {
+    protected void use(User player, PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
         if (block == null) {
             return;

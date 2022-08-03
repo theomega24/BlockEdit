@@ -1,5 +1,6 @@
-package dev.omega24.blockedit.config.manager;
+package dev.omega24.blockedit.manager;
 
+import dev.omega24.blockedit.config.annotation.Key;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;

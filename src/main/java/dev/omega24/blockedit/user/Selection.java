@@ -1,4 +1,4 @@
-package dev.omega24.blockedit.util.location;
+package dev.omega24.blockedit.user;
 
 import org.bukkit.Location;
 import org.bukkit.util.BoundingBox;
@@ -52,5 +52,13 @@ public class Selection {
         this.pos1 = null;
         this.pos2 = null;
         this.worldUUID = null;
+    }
+
+    public Selection clone() {
+        try {
+            return (Selection) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

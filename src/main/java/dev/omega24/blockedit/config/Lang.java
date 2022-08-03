@@ -1,6 +1,6 @@
 package dev.omega24.blockedit.config;
 
-import dev.omega24.blockedit.config.manager.Key;
+import dev.omega24.blockedit.config.annotation.Key;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;

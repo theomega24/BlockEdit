@@ -1,18 +1,33 @@
-package dev.omega24.blockedit.player;
+package dev.omega24.blockedit.user;
 
+import com.google.common.collect.Maps;
 import dev.omega24.blockedit.config.Lang;
-import dev.omega24.blockedit.util.location.Selection;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
 import java.util.UUID;
 
-public class BEPlayer {
+public class User {
+    private static final Map<UUID, User> users = Maps.newHashMap();
+
+    public static User get(Player player) {
+        return users.get(player.getUniqueId());
+    }
+
+    public static void create(Player player) {
+        users.computeIfAbsent(player.getUniqueId(), User::new);
+    }
+
+    public static void destroy(Player player) {
+        users.remove(player.getUniqueId());
+    }
+
     private final UUID uuid;
     private Selection selection;
 
-    public BEPlayer(UUID uuid) {
+    public User(UUID uuid) {
         this.uuid = uuid;
     }
 

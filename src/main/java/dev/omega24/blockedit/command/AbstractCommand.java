@@ -1,4 +1,4 @@
-package dev.omega24.blockedit.command.manager;
+package dev.omega24.blockedit.command;
 
 import cloud.commandframework.Command.Builder;
 import cloud.commandframework.context.CommandContext;
@@ -6,15 +6,15 @@ import cloud.commandframework.meta.CommandMeta;
 import cloud.commandframework.paper.PaperCommandManager;
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.config.Config;
-import dev.omega24.blockedit.player.BEPlayer;
+import dev.omega24.blockedit.user.User;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public abstract class Command {
+public abstract class AbstractCommand {
     protected final BlockEdit plugin;
     private final PaperCommandManager<CommandSender> manager;
 
-    public Command(BlockEdit plugin, PaperCommandManager<CommandSender> manager) {
+    public AbstractCommand(BlockEdit plugin, PaperCommandManager<CommandSender> manager) {
         this.plugin = plugin;
         this.manager = manager;
     }
@@ -27,12 +27,12 @@ public abstract class Command {
         ).handler(this::execute));
     }
 
-    protected BEPlayer getPlayer(CommandContext<CommandSender> context) {
+    protected User getPlayer(CommandContext<CommandSender> context) {
         if (!(context.getSender() instanceof Player player)) {
             throw new IllegalCallerException();
         }
 
-        return plugin.getPlayerManager().get(player);
+        return User.get(player);
     }
 
     protected abstract Builder<CommandSender> register(Builder<CommandSender> builder);

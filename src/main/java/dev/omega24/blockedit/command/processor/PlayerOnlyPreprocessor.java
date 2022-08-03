@@ -1,4 +1,4 @@
-package dev.omega24.blockedit.command.util;
+package dev.omega24.blockedit.command.processor;
 
 import cloud.commandframework.execution.preprocessor.CommandPreprocessingContext;
 import cloud.commandframework.execution.preprocessor.CommandPreprocessor;

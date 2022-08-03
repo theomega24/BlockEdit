@@ -5,10 +5,10 @@ import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.wand.SelectionWand;
 import org.jetbrains.annotations.Nullable;
 
-public class WandManager {
+public class Wands {
     private final ImmutableList<Wand> wands;
 
-    public WandManager(BlockEdit plugin) {
+    public Wands(BlockEdit plugin) {
         wands = ImmutableList.of(
                 new SelectionWand(plugin)
         );

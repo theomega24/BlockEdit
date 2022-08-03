@@ -4,10 +4,10 @@ import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.config.Config;
 import dev.omega24.blockedit.config.Lang;
 import dev.omega24.blockedit.player.BEPlayer;
-import dev.omega24.blockedit.util.location.Position;
 import dev.omega24.blockedit.wand.manager.Wand;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -30,19 +30,19 @@ public class SelectionWand extends Wand {
             return;
         }
 
-        Position position = Position.from(block.getLocation());
+        Location location = block.getLocation();
         if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            player.setPos1(position);
+            player.getSelection().setPos1(location);
         } else {
-            player.setPos2(position);
+            player.getSelection().setPos2(location);
         }
 
         player.send(
                 Lang.SELECTION_WAND_SET_POSITION,
                 Placeholder.unparsed("pos", event.getAction() == Action.LEFT_CLICK_BLOCK ? Lang.NUMBER_ONE : Lang.NUMBER_TWO),
-                Placeholder.unparsed("x", String.valueOf(position.x())),
-                Placeholder.unparsed("y", String.valueOf(position.y())),
-                Placeholder.unparsed("z", String.valueOf(position.z()))
+                Placeholder.unparsed("x", String.valueOf(location.getBlockX())),
+                Placeholder.unparsed("y", String.valueOf(location.getBlockY())),
+                Placeholder.unparsed("z", String.valueOf(location.getBlockZ()))
         );
     }
 

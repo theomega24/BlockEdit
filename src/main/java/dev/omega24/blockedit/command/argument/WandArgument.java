@@ -64,7 +64,7 @@ public class WandArgument<C> extends CommandArgument<C, Wand> {
                 return ArgumentParseResult.failure(new NoInputProvidedException(WandParser.class, commandContext));
             }
 
-            Wand wand = plugin.getWandManager().getById(input);
+            Wand wand = plugin.getWands().getById(input);
             if (wand == null) {
                 return ArgumentParseResult.failure(new WandParseException(input));
             }
@@ -75,7 +75,7 @@ public class WandArgument<C> extends CommandArgument<C, Wand> {
 
         @Override
         public @NonNull List<String> suggestions(@NonNull CommandContext<C> commandContext, @NonNull String input) {
-            return plugin.getWandManager().getAll().stream().map((wand) -> wand.getKey().getKey()).collect(Collectors.toList());
+            return plugin.getWands().getAll().stream().map((wand) -> wand.getKey().getKey()).collect(Collectors.toList());
         }
     }
 

@@ -6,7 +6,7 @@ import cloud.commandframework.execution.AsynchronousCommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.google.common.collect.ImmutableList;
 import dev.omega24.blockedit.BlockEdit;
-import dev.omega24.blockedit.command.AbstractCommand;
+import dev.omega24.blockedit.command.Command;
 import dev.omega24.blockedit.command.WandCommand;
 import dev.omega24.blockedit.command.processor.PlayerOnlyPreprocessor;
 import org.bukkit.command.CommandSender;
@@ -35,6 +35,6 @@ public class CommandManager {
 
         ImmutableList.of(
                 new WandCommand(plugin, manager)
-        ).forEach(AbstractCommand::register);
+        ).forEach(Command::register);
     }
 }

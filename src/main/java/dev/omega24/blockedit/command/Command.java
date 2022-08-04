@@ -10,11 +10,11 @@ import dev.omega24.blockedit.user.User;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public abstract class AbstractCommand {
+public abstract class Command {
     protected final BlockEdit plugin;
     private final PaperCommandManager<CommandSender> manager;
 
-    public AbstractCommand(BlockEdit plugin, PaperCommandManager<CommandSender> manager) {
+    public Command(BlockEdit plugin, PaperCommandManager<CommandSender> manager) {
         this.plugin = plugin;
         this.manager = manager;
     }
@@ -27,7 +27,7 @@ public abstract class AbstractCommand {
         ).handler(this::execute));
     }
 
-    protected User getPlayer(CommandContext<CommandSender> context) {
+    protected User getUser(CommandContext<CommandSender> context) {
         if (!(context.getSender() instanceof Player player)) {
             throw new IllegalCallerException();
         }

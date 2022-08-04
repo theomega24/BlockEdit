@@ -6,10 +6,10 @@ import cloud.commandframework.paper.PaperCommandManager;
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.command.argument.WandArgument;
 import dev.omega24.blockedit.config.Lang;
-import dev.omega24.blockedit.wand.AbstractWand;
+import dev.omega24.blockedit.wand.Wand;
 import org.bukkit.command.CommandSender;
 
-public class WandCommand extends AbstractCommand {
+public class WandCommand extends Command {
 
     public WandCommand(BlockEdit plugin, PaperCommandManager<CommandSender> manager) {
         super(plugin, manager);
@@ -22,8 +22,8 @@ public class WandCommand extends AbstractCommand {
 
     @Override
     protected void execute(CommandContext<CommandSender> context) {
-        AbstractWand wand = context.get("wand");
-        wand.give(getPlayer(context));
+        Wand wand = context.get("wand");
+        wand.give(getUser(context));
     }
 
     @Override

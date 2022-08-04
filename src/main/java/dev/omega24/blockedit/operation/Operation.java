@@ -5,17 +5,20 @@ import dev.omega24.blockedit.user.Selection;
 import dev.omega24.blockedit.user.User;
 import dev.omega24.blockedit.util.location.ChunkPosition;
 import dev.omega24.blockedit.util.location.ChunkWork;
-import dev.omega24.blockedit.util.location.LocationUtil;
+import dev.omega24.blockedit.util.LocationUtil;
 import dev.omega24.blockedit.util.location.Position;
+import org.bukkit.block.Block;
 
 import java.util.Collection;
 
-public abstract class AbstractOperation {
+public abstract class Operation {
     protected final Selection selection;
 
-    public AbstractOperation(User user) {
+    public Operation(User user) {
         this.selection = user.getSelection().clone();
     }
+
+    public abstract void change(Block block);
 
     protected abstract Collection<Position> filterPositions();
 

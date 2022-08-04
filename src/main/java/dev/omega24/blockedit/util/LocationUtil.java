@@ -1,6 +1,7 @@
-package dev.omega24.blockedit.util.location;
+package dev.omega24.blockedit.util;
 
 import com.google.common.collect.Lists;
+import dev.omega24.blockedit.util.location.ChunkPosition;
 import org.bukkit.util.BoundingBox;
 
 import java.util.Collection;

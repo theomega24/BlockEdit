@@ -15,12 +15,12 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 
-public abstract class AbstractWand implements Listener {
+public abstract class Wand implements Listener {
     protected final BlockEdit plugin;
     private final WandData data;
     private final NamespacedKey key;
 
-    public AbstractWand(BlockEdit plugin) {
+    public Wand(BlockEdit plugin) {
         this.plugin = plugin;
         this.data = data();
         this.key = new NamespacedKey(plugin, data.id());
@@ -36,8 +36,8 @@ public abstract class AbstractWand implements Listener {
         return this.key;
     }
 
-    public void give(User player) {
-        PlayerInventory inventory = player.getPlayer().getInventory();
+    public void give(User user) {
+        PlayerInventory inventory = user.getPlayer().getInventory();
         for (int slot = 0; slot <= 8; slot++) {
             if (inventory.getStorageContents()[slot] == null) {
                 inventory.addItem(data.item.clone());
@@ -45,7 +45,7 @@ public abstract class AbstractWand implements Listener {
             }
         }
 
-        player.send(Lang.WAND_COMMAND_HOTBAR_FULL);
+        user.send(Lang.WAND_COMMAND_HOTBAR_FULL);
     }
 
     @EventHandler
@@ -60,7 +60,7 @@ public abstract class AbstractWand implements Listener {
         }
     }
 
-    protected abstract void use(User player, PlayerInteractEvent event);
+    protected abstract void use(User user, PlayerInteractEvent event);
 
     protected abstract WandData data();
 

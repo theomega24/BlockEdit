@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SelectionWand extends AbstractWand {
+public class SelectionWand extends Wand {
 
     public SelectionWand(BlockEdit plugin) {
         super(plugin);

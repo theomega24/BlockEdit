@@ -1,9 +1,13 @@
 package dev.omega24.blockedit.util.location;
 
-public record ChunkPosition(int x, int z) {
+import java.util.UUID;
+
+public record ChunkPosition(int x, int z, UUID worldUUID) {
 
     public boolean contains(Position position) {
-        return position.x() >> 4 == x && position.z() >> 4 == z;
+        return position.x() >> 4 == x &&
+                position.z() >> 4 == z &&
+                position.worldUUID().equals(worldUUID);
     }
 
     @Override

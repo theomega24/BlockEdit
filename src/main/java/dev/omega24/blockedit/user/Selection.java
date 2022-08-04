@@ -1,8 +1,11 @@
 package dev.omega24.blockedit.user;
 
+import com.google.common.collect.Lists;
+import dev.omega24.blockedit.util.location.Position;
 import org.bukkit.Location;
 import org.bukkit.util.BoundingBox;
 
+import java.util.Collection;
 import java.util.UUID;
 
 public class Selection {
@@ -12,6 +15,21 @@ public class Selection {
 
     public BoundingBox createBoundingBox() {
         return BoundingBox.of(pos1, pos2).expand(0.5, 0.5, 0.5).shift(0.5, 0.5, 0.5);
+    }
+
+    public Collection<Position> getAllPositions() {
+        Collection<Position> positions = Lists.newArrayList();
+        BoundingBox box = createBoundingBox();
+
+        for (double x = box.getMinX(); x <= box.getMaxX(); x++) {
+            for (double y = box.getMinY(); y <= box.getMaxY(); y++) {
+                for (double z = box.getMinZ(); z <= box.getMaxZ(); z++) {
+                    positions.add(new Position((int) x, (int) y, (int) z, worldUUID));
+                }
+            }
+        }
+
+        return positions;
     }
 
     public Location getPos1() {

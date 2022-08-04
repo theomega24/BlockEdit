@@ -12,7 +12,6 @@ public class PlayerOnlyPreprocessor implements CommandPreprocessor<CommandSender
 
     @Override
     public void accept(@NotNull CommandPreprocessingContext<CommandSender> context) {
-        // todo: figure out a way for commands to bypass this
         if (!(context.getCommandContext().getSender() instanceof Player)) {
             Lang.send(context.getCommandContext().getSender(), Lang.PLAYER_COMMAND_ONLY);
             ConsumerService.interrupt();

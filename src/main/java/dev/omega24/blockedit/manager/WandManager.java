@@ -1,27 +1,30 @@
 package dev.omega24.blockedit.manager;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.wand.SelectionWand;
 import dev.omega24.blockedit.wand.Wand;
 import org.jetbrains.annotations.Nullable;
 
-public class WandManager {
-    private final ImmutableList<Wand> wands;
+import java.util.Collection;
+import java.util.List;
 
-    public WandManager(BlockEdit plugin) {
-        wands = ImmutableList.of(
+public class WandManager {
+    private static final Collection<Wand> WANDS = Lists.newArrayList();
+
+    public static void load(BlockEdit plugin) {
+        WANDS.addAll(List.of(
                 new SelectionWand(plugin)
-        );
+        ));
     }
 
-    public ImmutableList<Wand> getAll() {
-        return this.wands;
+    public static Collection<Wand> getAll() {
+        return WANDS;
     }
 
     @Nullable
-    public Wand getById(String id) {
-        for (Wand wand : wands) {
+    public static Wand getById(String id) {
+        for (Wand wand : WANDS) {
             if (wand.getKey().getKey().equals(id)) {
                 return wand;
             }

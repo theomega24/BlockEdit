@@ -5,5 +5,9 @@ api-version: "1.19"
 author: "omega24"
 
 permissions:
+  blockedit.command.replace:
+    default: op
+  blockedit.command.set:
+    default: op
   blockedit.command.wand:
     default: op

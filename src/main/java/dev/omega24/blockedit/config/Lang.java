@@ -23,6 +23,12 @@ public class Lang {
     @Key("command.wand.wand-not-found")
     public static String WAND_COMMAND_NOT_FOUND = "The wand <wand> could not be found";
 
+    @Key("command.set.description")
+    public static String SET_COMMAND_DESCRIPTION = "Sets all blocks in a selection to a new type";
+
+    @Key("command.replace.description")
+    public static String REPLACE_COMMAND_DESCRIPTION = "Replaces all blocks of one type to another type";
+
     @Key("command.error.player-only")
     public static String PLAYER_COMMAND_ONLY = "You can only run this command as a player";
 

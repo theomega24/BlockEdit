@@ -8,6 +8,7 @@ import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.parsing.NoInputProvidedException;
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.config.Lang;
+import dev.omega24.blockedit.manager.WandManager;
 import dev.omega24.blockedit.wand.Wand;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -75,7 +76,7 @@ public class WandArgument<C> extends CommandArgument<C, Wand> {
 
         @Override
         public @NonNull List<String> suggestions(@NonNull CommandContext<C> commandContext, @NonNull String input) {
-            return plugin.getWandManager().getAll().stream().map((wand) -> wand.getKey().getKey()).collect(Collectors.toList());
+            return WandManager.getAll().stream().map((wand) -> wand.getKey().getKey()).collect(Collectors.toList());
         }
     }
 

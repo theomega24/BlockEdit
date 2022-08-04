@@ -7,6 +7,8 @@ import cloud.commandframework.paper.PaperCommandManager;
 import com.google.common.collect.ImmutableList;
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.command.Command;
+import dev.omega24.blockedit.command.ReplaceCommand;
+import dev.omega24.blockedit.command.SetCommand;
 import dev.omega24.blockedit.command.WandCommand;
 import dev.omega24.blockedit.command.processor.PlayerOnlyPreprocessor;
 import org.bukkit.command.CommandSender;
@@ -34,6 +36,8 @@ public class CommandManager {
         manager.registerCommandPreProcessor(new PlayerOnlyPreprocessor());
 
         ImmutableList.of(
+                new ReplaceCommand(plugin, manager),
+                new SetCommand(plugin, manager),
                 new WandCommand(plugin, manager)
         ).forEach(Command::register);
     }

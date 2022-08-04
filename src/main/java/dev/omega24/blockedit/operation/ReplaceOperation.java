@@ -7,15 +7,17 @@ import org.bukkit.block.Block;
 
 import java.util.Collection;
 
-public class SetOperation extends Operation<SetOperation.Data> {
+public class ReplaceOperation extends Operation<ReplaceOperation.Data> {
 
-    public SetOperation(User user, Data data) {
+    public ReplaceOperation(User user, Data data) {
         super(user, data);
     }
 
     @Override
     public void change(Block block) {
-        block.setBlockData(data().material().createBlockData());
+        if (block.getBlockData().getMaterial() == data().from()) {
+            block.setBlockData(data().to().createBlockData());
+        }
     }
 
     @Override
@@ -24,6 +26,7 @@ public class SetOperation extends Operation<SetOperation.Data> {
     }
 
     public record Data(
-            Material material
+            Material from,
+            Material to
     ) {}
 }

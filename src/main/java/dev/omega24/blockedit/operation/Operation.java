@@ -4,23 +4,29 @@ import com.google.common.collect.Lists;
 import dev.omega24.blockedit.user.Selection;
 import dev.omega24.blockedit.user.User;
 import dev.omega24.blockedit.util.location.ChunkPosition;
-import dev.omega24.blockedit.util.location.ChunkWork;
+import dev.omega24.blockedit.util.operation.ChunkWork;
 import dev.omega24.blockedit.util.LocationUtil;
 import dev.omega24.blockedit.util.location.Position;
 import org.bukkit.block.Block;
 
 import java.util.Collection;
 
-public abstract class Operation {
+public abstract class Operation<D> {
     protected final Selection selection;
+    private final D data;
 
-    public Operation(User user) {
+    public Operation(User user, D data) {
         this.selection = user.getSelection().clone();
+        this.data = data;
     }
 
     public abstract void change(Block block);
 
     protected abstract Collection<Position> filterPositions();
+
+    protected D data() {
+        return this.data;
+    }
 
     public Collection<ChunkWork> splitChunkWork() {
         Collection<Position> positions = this.filterPositions();

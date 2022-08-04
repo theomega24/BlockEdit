@@ -1,7 +1,9 @@
 package dev.omega24.blockedit.manager;
 
+import dev.omega24.blockedit.config.annotation.Comment;
 import dev.omega24.blockedit.config.annotation.Key;
-import org.bukkit.Material;
+import dev.omega24.blockedit.config.serializer.Serializer;
+import dev.omega24.blockedit.config.serializer.Serializers;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -9,6 +11,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 public class ConfigManager {
 
@@ -36,12 +39,16 @@ public class ConfigManager {
             }
             String key = keyAnnotation.value();
 
+            if (field.isAnnotationPresent(Comment.class)) {
+                config.setComments(key, Arrays.asList(field.getDeclaredAnnotation(Comment.class).value().split("\n")));
+            }
+
+
             try {
                 Object value = field.get(null);
-
-                boolean isMaterial = value.getClass().equals(Material.class);
-                if (isMaterial) {
-                    value = ((Material) value).getKey().asString();
+                Serializer serializer = Serializers.get(value.getClass());
+                if (serializer != null) {
+                    value = serializer.serialize(value);
                 }
 
                 if (config.get(key) == null) {
@@ -49,9 +56,10 @@ public class ConfigManager {
                 }
 
                 value = config.get(key);
-                if (isMaterial) {
-                    value = Material.matchMaterial((String) value);
+                if (serializer != null) {
+                    value = serializer.deserialize(value);
                 }
+
                 field.set(null, value);
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);

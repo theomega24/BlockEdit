@@ -1,31 +1,44 @@
 package dev.omega24.blockedit.util.operation;
 
+import com.google.common.collect.Lists;
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.operation.Operation;
-import dev.omega24.blockedit.util.location.ChunkWork;
 import org.bukkit.World;
 
 import java.util.Collection;
 
 public class OperationRunner {
     private final BlockEdit plugin;
-    private final Operation operation;
+    private final Operation<?> operation;
     private final Collection<ChunkWork> chunks;
+    private final Collection<Long> times = Lists.newArrayList();
 
-    public OperationRunner(BlockEdit plugin, Operation operation) {
+    public OperationRunner(BlockEdit plugin, Operation<?> operation) {
         this.plugin = plugin;
         this.operation = operation;
         this.chunks = operation.splitChunkWork();
+
+        this.run(1);
     }
 
-    public void start() {
-        plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
-            // todo: dynamically determine chunk amount based off of the current server mspt
-            chunks.stream().limit(10).forEach(chunk -> {
-                chunks.remove(chunk);
-                this.handleChunkWork(chunk);
-            });
-        }, 0L, 20L);
+    public boolean isDone() {
+        return chunks.isEmpty();
+    }
+
+    public long averageTime() {
+        long total = 0;
+        for (long time : times) {
+            total += time;
+        }
+
+        return total / times.size();
+    }
+
+    public void run(int amount) {
+        chunks.stream().limit(amount).forEach(chunk -> {
+            chunks.remove(chunk);
+            this.handleChunkWork(chunk);
+        });
     }
 
     private void handleChunkWork(ChunkWork work) {
@@ -36,6 +49,7 @@ public class OperationRunner {
 
         // todo: figure out if this system can cause light/block update lag
         world.getChunkAtAsync(work.chunk().x(), work.chunk().z()).thenAccept((chunk) -> {
+            long startTime = System.currentTimeMillis();
             chunk.addPluginChunkTicket(plugin);
 
             work.positions().forEach(position -> {
@@ -43,6 +57,8 @@ public class OperationRunner {
             });
 
             chunk.removePluginChunkTicket(plugin);
+            long endTime = System.currentTimeMillis();
+            times.add(endTime - startTime);
         });
     }
 }

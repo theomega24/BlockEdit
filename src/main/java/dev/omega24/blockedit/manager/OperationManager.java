@@ -30,7 +30,6 @@ public class OperationManager {
             return;
         }
 
-        // todo: run completion task on main thread
         CompletableFuture.supplyAsync(() -> new OperationRunner(plugin, operation), executor).thenAccept((runner) -> plugin.getServer().getScheduler().runTask(plugin, () -> {
             runners.add(runner);
             runner.run(1);
@@ -45,21 +44,15 @@ public class OperationManager {
         double time = Config.MAX_MSPT - TickUtil.MSPT_5S.average();
         double timePer = time / runners.size();
 
-        Iterator<OperationRunner> iterator = runners.iterator();
-        while (iterator.hasNext()) {
-            OperationRunner runner = iterator.next();
-            if (runner.isDone()) {
-                iterator.remove();
+        runners.removeIf(OperationRunner::isDone);
+        runners.forEach(runner -> {
+            long average = runner.averageTime();
+            if (average > timePer) {
+                runner.resetAverageTime();
+                runner.run(1);
             } else {
-                long average = runner.averageTime();
-                if (average > timePer) {
-                    runner.resetAverageTime();
-                    runner.run(1);
-                    continue;
-                }
-
-                runner.run(Math.abs((int) (timePer / runner.averageTime())));
+                runner.run(Math.abs((int) (timePer / average)));
             }
-        }
+        });
     }
 }

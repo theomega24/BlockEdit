@@ -56,8 +56,6 @@ public class WandArgument<C> extends CommandArgument<C, Wand> {
     }
 
     public static class WandParser<C> implements ArgumentParser<C, Wand> {
-        private final BlockEdit plugin = JavaPlugin.getPlugin(BlockEdit.class);
-
         @Override
         public @NonNull ArgumentParseResult<Wand> parse(@NotNull CommandContext<C> commandContext, @NotNull Queue<String> inputQueue) {
             String input = inputQueue.peek();

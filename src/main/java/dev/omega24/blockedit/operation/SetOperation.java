@@ -15,13 +15,12 @@ public class SetOperation extends Operation<SetOperation.Data> {
 
     @Override
     public void change(Block block) {
-        System.out.println("Changing block " + block.getLocation());
         block.setBlockData(data().material().createBlockData());
     }
 
     @Override
     protected Collection<Position> filterPositions() {
-        return this.selection.getAllPositions();
+        return this.user.getSelection().getAllPositions();
     }
 
     public record Data(

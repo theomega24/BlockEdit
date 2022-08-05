@@ -3,8 +3,11 @@ package dev.omega24.blockedit.util.operation;
 import com.google.common.collect.Lists;
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.operation.Operation;
+import net.minecraft.world.level.Level;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_19_R1.CraftChunk;
+import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -19,8 +22,6 @@ public class OperationRunner {
         this.plugin = plugin;
         this.operation = operation;
         this.chunks = operation.splitChunkWork();
-
-        this.run(1);
     }
 
     public boolean isDone() {
@@ -41,28 +42,27 @@ public class OperationRunner {
     }
 
     public void run(int amount) {
-        Collection<ChunkWork> toRemove = Lists.newArrayList();
-        chunks.stream().limit(amount).forEach(chunk -> {
+        Iterator<ChunkWork> iterator = chunks.iterator();
+        while (iterator.hasNext() && amount > 0) {
+            ChunkWork chunk = iterator.next();
             this.handleChunkWork(chunk);
-            toRemove.add(chunk);
-        });
-        chunks.removeAll(toRemove);
+            iterator.remove();
+            amount--;
+        }
     }
 
     private void handleChunkWork(ChunkWork work) {
         World world = plugin.getServer().getWorld(work.chunk().worldUUID());
         if (world == null) {
-            throw new IllegalStateException("Could not find world with UUID " + work.chunk().worldUUID());
+            throw new IllegalStateException("World not found");
         }
 
         // todo: figure out if this system can cause light/block update lag
         world.getChunkAtAsync(work.chunk().x(), work.chunk().z(), true).thenAccept((chunk) -> {
+
             long startTime = System.currentTimeMillis();
 
-            work.positions().forEach(position -> {
-                Block block = chunk.getBlock(position.x(), position.y(), position.z()); // todo: everything gets held up on this one line (probably because of the async)
-                operation.change(block);
-            });
+            work.positions().forEach(position -> operation.change(world.getBlockAt(position.x(), position.y(), position.z())));
 
             long endTime = System.currentTimeMillis();
             times.add(endTime - startTime);

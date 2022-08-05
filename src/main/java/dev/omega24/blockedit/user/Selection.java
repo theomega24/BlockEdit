@@ -14,7 +14,7 @@ public class Selection {
     private UUID worldUUID;
 
     public BoundingBox createBoundingBox() {
-        return BoundingBox.of(pos1, pos2).expand(0.5, 0.5, 0.5).shift(0.5, 0.5, 0.5);
+        return BoundingBox.of(pos1, pos2);
     }
 
     public Collection<Position> getAllPositions() {
@@ -37,10 +37,6 @@ public class Selection {
     }
 
     public void setPos1(Location pos1) {
-        if (!pos1.getWorld().getUID().equals(worldUUID)) {
-            this.reset();
-        }
-
         this.worldUUID = pos1.getWorld().getUID();
         this.pos1 = pos1;
     }
@@ -50,10 +46,6 @@ public class Selection {
     }
 
     public void setPos2(Location pos2) {
-        if (!pos2.getWorld().getUID().equals(worldUUID)) {
-            this.reset();
-        }
-
         this.worldUUID = pos2.getWorld().getUID();
         this.pos2 = pos2;
     }
@@ -66,18 +58,13 @@ public class Selection {
         this.worldUUID = worldUUID;
     }
 
+    public boolean isValid() {
+        return pos1 != null && pos2 != null;
+    }
+
     public void reset() {
         this.pos1 = null;
         this.pos2 = null;
         this.worldUUID = null;
-    }
-
-    @Override
-    public Selection clone() {
-        Selection selection = new Selection();
-        selection.setPos1(this.pos1.clone());
-        selection.setPos2(this.pos2.clone());
-        selection.setWorldUUID(this.worldUUID);
-        return selection;
     }
 }

@@ -13,12 +13,16 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public abstract class Operation<D> {
-    protected final Selection selection;
+    protected final User user;
     private final D data;
 
     public Operation(User user, D data) {
-        this.selection = user.getSelection().clone();
+        this.user = user;
         this.data = data;
+    }
+
+    public User getUser() {
+        return this.user;
     }
 
     public abstract void change(Block block);
@@ -31,23 +35,24 @@ public abstract class Operation<D> {
 
     public Collection<ChunkWork> splitChunkWork() {
         Collection<Position> positions = this.filterPositions();
-        Collection<ChunkPosition> chunks = LocationUtil.getChunksFromBB(this.selection.createBoundingBox(), this.selection.getWorldUUID());
+        Collection<ChunkPosition> chunks = LocationUtil.getChunksFromBB(this.user.getSelection().createBoundingBox(), this.user.getSelection().getWorldUUID());
         Collection<ChunkWork> work = Lists.newArrayList();
 
-        chunks.forEach(chunk -> {
-            Collection<Position> chunkPositions = Lists.newArrayList();
-            Iterator<Position> iterator = positions.iterator();
-            while (iterator.hasNext()) {
-                Position position = iterator.next();
+        System.out.println("Chunks: " + chunks.size());
+        System.out.println("Positions: " + positions.size());
 
+        for (ChunkPosition chunk : chunks) {
+            Collection<Position> chunkPositions = Lists.newArrayList();
+            for (Position position : positions) {
                 if (chunk.contains(position)) {
                     chunkPositions.add(position);
-                    iterator.remove();
+                    positions.remove(position);
                 }
+
             }
 
             work.add(new ChunkWork(chunk, chunkPositions));
-        });
+        }
 
         return work;
     }

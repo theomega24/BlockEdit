@@ -22,7 +22,7 @@ public class ReplaceOperation extends Operation<ReplaceOperation.Data> {
 
     @Override
     protected Collection<Position> filterPositions() {
-        return this.selection.getAllPositions();
+        return this.user.getSelection().getAllPositions();
     }
 
     public record Data(

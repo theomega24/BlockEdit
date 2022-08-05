@@ -8,6 +8,7 @@ import dev.omega24.blockedit.util.TickUtil;
 import dev.omega24.blockedit.util.operation.OperationRunner;
 
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 
 public class OperationManager {
     private final BlockEdit plugin;
@@ -19,7 +20,15 @@ public class OperationManager {
     }
 
     public void submit(Operation<?> operation) {
-        runners.add(new OperationRunner(plugin, operation));
+        if (!operation.getUser().getSelection().isValid()) {
+            operation.getUser().send(""); // todo: lang this
+            return;
+        }
+
+        CompletableFuture.supplyAsync(() -> new OperationRunner(plugin, operation)).thenAccept((runner) -> {
+            runners.add(runner);
+            runner.run(1);
+        });
     }
 
     private void tick() {

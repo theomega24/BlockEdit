@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 
 import java.util.Collection;
 
+// todo: this doesnt seem to work
 public class ReplaceOperation extends Operation<ReplaceOperation.Data> {
 
     public ReplaceOperation(User user, Data data) {
@@ -15,7 +16,7 @@ public class ReplaceOperation extends Operation<ReplaceOperation.Data> {
 
     @Override
     public void change(Block block) {
-        if (block.getBlockData().getMaterial() == data().from()) {
+        if (block.getBlockData().getMaterial().equals(data().from())) {
             block.setBlockData(data().to().createBlockData());
         }
     }

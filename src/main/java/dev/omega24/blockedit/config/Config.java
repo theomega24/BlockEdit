@@ -13,7 +13,7 @@ public class Config {
     @Comment("""
             The max MSPT that the executor will continue to run operations at.
             If this is set to '50', the executor won't allow any operations to cause the server to go over 50 mspt.
-            If the server is already over 50 mspt, then no operations will run at all.
+            If the server is already over 50 mspt, then the server will run one chunk per tick.
             """)
     public static double MAX_MSPT = 50D;
 

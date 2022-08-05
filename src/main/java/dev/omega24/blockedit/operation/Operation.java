@@ -1,6 +1,7 @@
 package dev.omega24.blockedit.operation;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import dev.omega24.blockedit.user.Selection;
 import dev.omega24.blockedit.user.User;
 import dev.omega24.blockedit.util.location.ChunkPosition;
@@ -11,6 +12,7 @@ import org.bukkit.block.Block;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 public abstract class Operation<D> {
     protected final User user;
@@ -38,21 +40,14 @@ public abstract class Operation<D> {
         Collection<ChunkPosition> chunks = LocationUtil.getChunksFromBB(this.user.getSelection().createBoundingBox(), this.user.getSelection().getWorldUUID());
         Collection<ChunkWork> work = Lists.newArrayList();
 
-        System.out.println("Chunks: " + chunks.size());
-        System.out.println("Positions: " + positions.size());
-
-        for (ChunkPosition chunk : chunks) {
-            Collection<Position> chunkPositions = Lists.newArrayList();
-            for (Position position : positions) {
-                if (chunk.contains(position)) {
-                    chunkPositions.add(position);
-                    positions.remove(position);
-                }
-
+        Map<ChunkPosition, Collection<Position>> positionsMap = Maps.newHashMap();
+        positions.forEach(position -> chunks.forEach(chunk -> {
+            if (chunk.contains(position)) {
+                positionsMap.computeIfAbsent(chunk, k -> Lists.newArrayList()).add(position);
             }
+        }));
 
-            work.add(new ChunkWork(chunk, chunkPositions));
-        }
+        positionsMap.forEach((chunk, chunkPositions) -> work.add(new ChunkWork(chunk, chunkPositions)));
 
         return work;
     }

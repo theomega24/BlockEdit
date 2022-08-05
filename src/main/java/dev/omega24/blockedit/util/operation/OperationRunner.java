@@ -41,6 +41,10 @@ public class OperationRunner {
         return total / times.size();
     }
 
+    public void resetAverageTime() {
+        times.clear();
+    }
+
     public void run(int amount) {
         Iterator<ChunkWork> iterator = chunks.iterator();
         while (iterator.hasNext() && amount > 0) {
@@ -57,9 +61,9 @@ public class OperationRunner {
             throw new IllegalStateException("World not found");
         }
 
+        // todo: use nms here
         // todo: figure out if this system can cause light/block update lag
         world.getChunkAtAsync(work.chunk().x(), work.chunk().z(), true).thenAccept((chunk) -> {
-
             long startTime = System.currentTimeMillis();
 
             work.positions().forEach(position -> operation.change(world.getBlockAt(position.x(), position.y(), position.z())));

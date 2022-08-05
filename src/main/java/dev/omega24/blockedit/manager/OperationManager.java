@@ -32,7 +32,6 @@ public class OperationManager {
 
         // todo: run completion task on main thread
         CompletableFuture.supplyAsync(() -> new OperationRunner(plugin, operation), executor).thenAccept((runner) -> plugin.getServer().getScheduler().runTask(plugin, () -> {
-            Bukkit.getLogger().info("Operation submitted");
             runners.add(runner);
             runner.run(1);
         }));

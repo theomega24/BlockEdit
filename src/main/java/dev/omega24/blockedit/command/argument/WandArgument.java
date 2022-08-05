@@ -7,12 +7,11 @@ import cloud.commandframework.arguments.parser.ArgumentParser;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.exceptions.parsing.NoInputProvidedException;
 import dev.omega24.blockedit.BlockEdit;
+import dev.omega24.blockedit.api.wand.Wand;
 import dev.omega24.blockedit.config.Lang;
-import dev.omega24.blockedit.manager.WandManager;
-import dev.omega24.blockedit.wand.Wand;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.NamespacedKey;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +25,6 @@ public class WandArgument<C> extends CommandArgument<C, Wand> {
     WandArgument(boolean required, String name, String defaultValue, BiFunction<CommandContext<C>, String, List<String>> suggestionsProvider, ArgumentDescription defaultDescription) {
         super(required, name, new WandParser<>(), defaultValue, Wand.class, suggestionsProvider, defaultDescription);
     }
-
 
     public static <C> CommandArgument.Builder<C, Wand> newBuilder(String name) {
         return new WandArgument.Builder<>(name);
@@ -55,7 +53,10 @@ public class WandArgument<C> extends CommandArgument<C, Wand> {
         }
     }
 
+    // todo: this whole mess is broken
     public static class WandParser<C> implements ArgumentParser<C, Wand> {
+        public BlockEdit plugin = BlockEdit.getPlugin(BlockEdit.class);
+
         @Override
         public @NonNull ArgumentParseResult<Wand> parse(@NotNull CommandContext<C> commandContext, @NotNull Queue<String> inputQueue) {
             String input = inputQueue.peek();
@@ -63,7 +64,7 @@ public class WandArgument<C> extends CommandArgument<C, Wand> {
                 return ArgumentParseResult.failure(new NoInputProvidedException(WandParser.class, commandContext));
             }
 
-            Wand wand = WandManager.getById(input);
+            Wand wand = plugin.getWandManager().getByKey(new NamespacedKey(plugin, input)); // todo: doesn't support other plugins (cloud is a mess)
             if (wand == null) {
                 return ArgumentParseResult.failure(new WandParseException(input));
             }
@@ -74,7 +75,7 @@ public class WandArgument<C> extends CommandArgument<C, Wand> {
 
         @Override
         public @NonNull List<String> suggestions(@NonNull CommandContext<C> commandContext, @NonNull String input) {
-            return WandManager.getAll().stream().map((wand) -> wand.getKey().getKey()).collect(Collectors.toList());
+            return plugin.getWandManager().getAll().stream().map((wand) -> wand.getKey().getKey()).collect(Collectors.toList()); // todo: doesn't support other plugins (cloud is a mess)
         }
     }
 

@@ -1,4 +1,4 @@
-package dev.omega24.blockedit.manager;
+package dev.omega24.blockedit.util.manager;
 
 import dev.omega24.blockedit.config.annotation.Comment;
 import dev.omega24.blockedit.config.annotation.Key;

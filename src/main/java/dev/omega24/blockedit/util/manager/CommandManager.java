@@ -1,4 +1,4 @@
-package dev.omega24.blockedit.manager;
+package dev.omega24.blockedit.util.manager;
 
 import cloud.commandframework.brigadier.CloudBrigadierManager;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;

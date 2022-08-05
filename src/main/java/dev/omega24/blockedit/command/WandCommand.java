@@ -4,10 +4,11 @@ import cloud.commandframework.Command.Builder;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.paper.PaperCommandManager;
 import dev.omega24.blockedit.BlockEdit;
+import dev.omega24.blockedit.api.wand.Wand;
 import dev.omega24.blockedit.command.argument.WandArgument;
 import dev.omega24.blockedit.config.Lang;
-import dev.omega24.blockedit.wand.Wand;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class WandCommand extends Command {
 
@@ -23,7 +24,9 @@ public class WandCommand extends Command {
     @Override
     protected void execute(CommandContext<CommandSender> context) {
         Wand wand = context.get("wand");
-        wand.give(getUser(context));
+        if (!plugin.getWandManager().give((Player) context.getSender(), wand)) {
+            Lang.send(context.getSender(), Lang.WAND_COMMAND_HOTBAR_FULL);
+        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-package dev.omega24.blockedit.manager;
+package dev.omega24.blockedit.impl;
 
 import com.google.common.collect.Lists;
 import dev.omega24.blockedit.BlockEdit;
@@ -6,10 +6,8 @@ import dev.omega24.blockedit.config.Config;
 import dev.omega24.blockedit.operation.Operation;
 import dev.omega24.blockedit.util.TickUtil;
 import dev.omega24.blockedit.util.operation.OperationRunner;
-import org.bukkit.Bukkit;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

@@ -17,7 +17,7 @@ public class User {
     }
 
     public static void create(Player player) {
-        users.computeIfAbsent(player.getUniqueId(), User::new);
+        users.put(player.getUniqueId(), new User(player.getUniqueId()));
     }
 
     public static void destroy(Player player) {
@@ -25,7 +25,7 @@ public class User {
     }
 
     private final UUID uuid;
-    private Selection selection;
+    private final Selection selection = new Selection();
 
     public User(UUID uuid) {
         this.uuid = uuid;

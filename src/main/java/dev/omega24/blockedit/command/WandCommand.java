@@ -17,7 +17,7 @@ public class WandCommand extends Command {
 
     @Override
     protected Builder<CommandSender> register(Builder<CommandSender> builder) {
-        return builder.argument(WandArgument.optional("wand", "selection"));
+        return builder.argument(WandArgument.optional("wand", "selection")); // todo: no default value?
     }
 
     @Override

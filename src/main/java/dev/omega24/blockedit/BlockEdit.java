@@ -30,7 +30,6 @@ public class BlockEdit extends JavaPlugin {
             getLogger().severe("Failed to load, disabling.");
             e.printStackTrace();
             getServer().getPluginManager().disablePlugin(this);
-            return;
         }
     }
 

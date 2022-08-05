@@ -65,7 +65,7 @@ public class WandArgument<C> extends CommandArgument<C, Wand> {
                 return ArgumentParseResult.failure(new NoInputProvidedException(WandParser.class, commandContext));
             }
 
-            Wand wand = plugin.getWandManager().getById(input);
+            Wand wand = WandManager.getById(input);
             if (wand == null) {
                 return ArgumentParseResult.failure(new WandParseException(input));
             }

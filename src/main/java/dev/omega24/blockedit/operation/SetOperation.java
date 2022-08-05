@@ -15,6 +15,7 @@ public class SetOperation extends Operation<SetOperation.Data> {
 
     @Override
     public void change(Block block) {
+        System.out.println("Changing block " + block.getLocation());
         block.setBlockData(data().material().createBlockData());
     }
 

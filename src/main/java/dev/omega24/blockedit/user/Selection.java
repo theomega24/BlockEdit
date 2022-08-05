@@ -72,11 +72,12 @@ public class Selection {
         this.worldUUID = null;
     }
 
+    @Override
     public Selection clone() {
-        try {
-            return (Selection) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
+        Selection selection = new Selection();
+        selection.setPos1(this.pos1.clone());
+        selection.setPos2(this.pos2.clone());
+        selection.setWorldUUID(this.worldUUID);
+        return selection;
     }
 }

@@ -4,8 +4,10 @@ import com.google.common.collect.Lists;
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.operation.Operation;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 public class OperationRunner {
     private final BlockEdit plugin;
@@ -26,6 +28,10 @@ public class OperationRunner {
     }
 
     public long averageTime() {
+        if (times.isEmpty()) {
+            return 1;
+        }
+
         long total = 0;
         for (long time : times) {
             total += time;
@@ -35,10 +41,12 @@ public class OperationRunner {
     }
 
     public void run(int amount) {
+        Collection<ChunkWork> toRemove = Lists.newArrayList();
         chunks.stream().limit(amount).forEach(chunk -> {
-            chunks.remove(chunk);
             this.handleChunkWork(chunk);
+            toRemove.add(chunk);
         });
+        chunks.removeAll(toRemove);
     }
 
     private void handleChunkWork(ChunkWork work) {
@@ -48,15 +56,14 @@ public class OperationRunner {
         }
 
         // todo: figure out if this system can cause light/block update lag
-        world.getChunkAtAsync(work.chunk().x(), work.chunk().z()).thenAccept((chunk) -> {
+        world.getChunkAtAsync(work.chunk().x(), work.chunk().z(), true).thenAccept((chunk) -> {
             long startTime = System.currentTimeMillis();
-            chunk.addPluginChunkTicket(plugin);
 
             work.positions().forEach(position -> {
-                operation.change(chunk.getBlock(position.x(), position.y(), position.z()));
+                Block block = chunk.getBlock(position.x(), position.y(), position.z()); // todo: everything gets held up on this one line (probably because of the async)
+                operation.change(block);
             });
 
-            chunk.removePluginChunkTicket(plugin);
             long endTime = System.currentTimeMillis();
             times.add(endTime - startTime);
         });

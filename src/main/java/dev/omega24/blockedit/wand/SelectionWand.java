@@ -23,7 +23,7 @@ public class SelectionWand extends Wand {
     }
 
     @Override
-    protected void use(User player, PlayerInteractEvent event) {
+    protected void use(User user, PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
         if (block == null) {
             return;
@@ -31,12 +31,12 @@ public class SelectionWand extends Wand {
 
         Location location = block.getLocation();
         if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            player.getSelection().setPos1(location);
+            user.getSelection().setPos1(location);
         } else {
-            player.getSelection().setPos2(location);
+            user.getSelection().setPos2(location);
         }
 
-        player.send(
+        user.send(
                 Lang.SELECTION_WAND_SET_POSITION,
                 Placeholder.unparsed("pos", event.getAction() == Action.LEFT_CLICK_BLOCK ? Lang.NUMBER_ONE : Lang.NUMBER_TWO),
                 Placeholder.unparsed("x", String.valueOf(location.getBlockX())),

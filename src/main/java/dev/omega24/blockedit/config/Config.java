@@ -12,7 +12,7 @@ public class Config {
     @Key("settings.max-mspt")
     @Comment("""
             The max MSPT that the executor will continue to run operations at.
-            If this is set to '50', the executor wont allow any operations to cause the server to go over 50 mspt.
+            If this is set to '50', the executor won't allow any operations to cause the server to go over 50 mspt.
             If the server is already over 50 mspt, then no operations will run at all.
             """)
     public static double MAX_MSPT = 50D;

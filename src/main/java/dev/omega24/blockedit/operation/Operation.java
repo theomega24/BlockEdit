@@ -10,6 +10,7 @@ import dev.omega24.blockedit.util.location.Position;
 import org.bukkit.block.Block;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 public abstract class Operation<D> {
     protected final Selection selection;
@@ -30,17 +31,20 @@ public abstract class Operation<D> {
 
     public Collection<ChunkWork> splitChunkWork() {
         Collection<Position> positions = this.filterPositions();
-        Collection<ChunkPosition> chunks = LocationUtil.getChunksFromBB(this.selection.createBoundingBox());
+        Collection<ChunkPosition> chunks = LocationUtil.getChunksFromBB(this.selection.createBoundingBox(), this.selection.getWorldUUID());
         Collection<ChunkWork> work = Lists.newArrayList();
 
         chunks.forEach(chunk -> {
             Collection<Position> chunkPositions = Lists.newArrayList();
-            positions.forEach(position -> {
+            Iterator<Position> iterator = positions.iterator();
+            while (iterator.hasNext()) {
+                Position position = iterator.next();
+
                 if (chunk.contains(position)) {
                     chunkPositions.add(position);
-                    positions.remove(position);
+                    iterator.remove();
                 }
-            });
+            }
 
             work.add(new ChunkWork(chunk, chunkPositions));
         });

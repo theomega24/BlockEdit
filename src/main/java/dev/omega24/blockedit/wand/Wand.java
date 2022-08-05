@@ -56,6 +56,7 @@ public abstract class Wand implements Listener {
         }
 
         if (data.actions().contains(event.getAction())) {
+            event.setCancelled(true);
             this.use(User.get(event.getPlayer()), event);
         }
     }

@@ -18,15 +18,19 @@ public class OperationManager {
         plugin.getServer().getScheduler().runTaskTimer(plugin, this::tick, 100, 20);
     }
 
-    public void submit(Operation operation) {
+    public void submit(Operation<?> operation) {
         runners.add(new OperationRunner(plugin, operation));
     }
 
     private void tick() {
+        if (runners.isEmpty()) {
+            return;
+        }
+
         double time = Config.MAX_MSPT - TickUtil.MSPT_5S.average();
         double timePer = time / runners.size();
         if (time < 0) {
-
+            // todo: figure out a better way to handle this (maybe send a message to the player?)
         }
 
         runners.forEach(runner -> runner.run(Math.abs((int) Math.floor(timePer / runner.averageTime()))));

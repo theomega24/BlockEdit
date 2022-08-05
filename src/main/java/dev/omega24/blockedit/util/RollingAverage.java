@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-// todo: verify this works
 public class RollingAverage {
     private final Map<Long, Double> values = Maps.newHashMap();
     private final long olderThan;

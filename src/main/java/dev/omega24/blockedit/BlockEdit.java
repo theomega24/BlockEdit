@@ -1,6 +1,7 @@
 package dev.omega24.blockedit;
 
 import dev.omega24.blockedit.api.BlockEditAPI;
+import dev.omega24.blockedit.api.operation.OperationManager;
 import dev.omega24.blockedit.api.wand.WandManager;
 import dev.omega24.blockedit.config.Config;
 import dev.omega24.blockedit.config.Lang;
@@ -9,7 +10,7 @@ import dev.omega24.blockedit.listener.TickListeners;
 import dev.omega24.blockedit.listener.WandListeners;
 import dev.omega24.blockedit.util.manager.CommandManager;
 import dev.omega24.blockedit.util.manager.ConfigManager;
-import dev.omega24.blockedit.impl.OperationManager;
+import dev.omega24.blockedit.impl.OperationManagerImpl;
 import dev.omega24.blockedit.impl.WandManagerImpl;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,15 +35,16 @@ public class BlockEdit extends JavaPlugin implements BlockEditAPI {
         getServer().getPluginManager().registerEvents(new WandListeners(this), this);
 
         this.wandManager = new WandManagerImpl(this);
-        this.operationManager = new OperationManager(this);
-    }
-
-    public OperationManager getOperationManager() {
-        return this.operationManager;
+        this.operationManager = new OperationManagerImpl(this);
     }
 
     @Override
-    public dev.omega24.blockedit.api.wand.WandManager getWandManager() {
+    public WandManager getWandManager() {
         return this.wandManager;
+    }
+
+    @Override
+    public OperationManager getOperationManager() {
+        return this.operationManager;
     }
 }

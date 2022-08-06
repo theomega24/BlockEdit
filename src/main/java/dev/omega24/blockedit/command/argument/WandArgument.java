@@ -64,7 +64,16 @@ public class WandArgument<C> extends CommandArgument<C, Wand> {
                 return ArgumentParseResult.failure(new NoInputProvidedException(WandParser.class, commandContext));
             }
 
-            Wand wand = plugin.getWandManager().getByKey(new NamespacedKey(plugin, input)); // todo: doesn't support other plugins (cloud is a mess)
+            if (!input.contains(":")) {
+                input = "blockedit:" + input;
+            }
+
+            NamespacedKey key = NamespacedKey.fromString(input);
+            if (key == null) {
+                return ArgumentParseResult.failure(new WandParseException(input));
+            }
+
+            Wand wand = plugin.getWandManager().getByKey(key); // todo: doesn't support other plugins (cloud is a mess)
             if (wand == null) {
                 return ArgumentParseResult.failure(new WandParseException(input));
             }
@@ -75,7 +84,7 @@ public class WandArgument<C> extends CommandArgument<C, Wand> {
 
         @Override
         public @NonNull List<String> suggestions(@NonNull CommandContext<C> commandContext, @NonNull String input) {
-            return plugin.getWandManager().getAll().stream().map((wand) -> wand.getKey().getKey()).collect(Collectors.toList()); // todo: doesn't support other plugins (cloud is a mess)
+            return plugin.getWandManager().getAll().stream().map((wand) -> wand.getKey().getNamespace().equalsIgnoreCase(plugin.getName()) ? wand.getKey().getKey() : wand.getKey().asString()).collect(Collectors.toList()); // todo: doesn't support other plugins (cloud is a mess)
         }
     }
 

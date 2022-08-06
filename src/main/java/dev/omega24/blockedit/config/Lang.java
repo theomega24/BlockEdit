@@ -16,6 +16,11 @@ public class Lang {
     @Key("prefix.player")
     public static String PLAYER_PREFIX = "<color:#006aff><b>BlockEdit »</b></color> ";
 
+    @Key("operation.no-selection")
+    public static String OPERATION_NO_SELECTION = "<red>You must have a selection to use this command";
+    @Key("operation.finished")
+    public static String OPERATION_FINISHED = "Changed <gray><blocks></gray> blocks in <gray><minutes>:<seconds></gray>";
+
     @Key("command.wand.description")
     public static String WAND_COMMAND_DESCRIPTION = "Gives the player a wand";
     @Key("command.wand.inventory-full")

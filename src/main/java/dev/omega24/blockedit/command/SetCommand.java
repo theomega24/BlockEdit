@@ -7,6 +7,7 @@ import cloud.commandframework.paper.PaperCommandManager;
 import dev.omega24.blockedit.BlockEdit;
 import dev.omega24.blockedit.config.Lang;
 import dev.omega24.blockedit.operation.SetOperation;
+import dev.omega24.blockedit.user.User;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
@@ -24,8 +25,10 @@ public class SetCommand extends Command {
     @Override
     protected void execute(CommandContext<CommandSender> context) {
         Material material = context.get("block");
-        SetOperation operation = new SetOperation(getUser(context), new SetOperation.Data(material));
-        plugin.getOperationManager().submit(operation);
+        User user = getUser(context);
+
+        SetOperation operation = new SetOperation(new SetOperation.Data(material), user.getSelection());
+        plugin.getOperationManager().submit(user.getPlayer(), operation);
     }
 
     @Override

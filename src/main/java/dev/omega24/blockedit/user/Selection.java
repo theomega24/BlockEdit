@@ -24,7 +24,7 @@ public class Selection {
         for (double x = box.getMinX(); x <= box.getMaxX(); x++) {
             for (double y = box.getMinY(); y <= box.getMaxY(); y++) {
                 for (double z = box.getMinZ(); z <= box.getMaxZ(); z++) {
-                    positions.add(new Position((int) x, (int) y, (int) z, worldUUID));
+                    positions.add(new Position((int) x, (int) y, (int) z));
                 }
             }
         }

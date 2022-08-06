@@ -1,2 +1,1 @@
-- dont use bukkit api
-- switch heavy calculations (operations) to be async
+- move away from cloud or just make it actually work
